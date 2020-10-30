@@ -6,13 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class City extends Model
 {
-
     /**
      * @var string[]
      */
     protected $fillable = [
         'name',
-        'gym_id',
     ];
 
     /**
@@ -20,6 +18,6 @@ class City extends Model
      */
     public function gym()
     {
-        return $this->hasMany(Gym::class);
+        return $this->hasMany(Gym::class, 'gym_id');
     }
 }

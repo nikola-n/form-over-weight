@@ -10903,3 +10903,22 @@ a.text-dark:focus {
   }
 }
 
+.home {
+  margin: 0;
+  padding: 0;
+  height: auto;
+  background-image: url(/images/105999935-1562097549646sport-stretching-leisure-hobby-woman-strong-exercise-workout-gym-weightlifting_t20_v7r7a7.jpg?5b611d90ff8d428130ab8f62b2a4d0cc), linear-gradient(rgba(0, 0, 0, 0.42), rgba(0, 0, 0, 0.52));
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.title {
+  padding-top: 8%;
+  padding-bottom: 2%;
+}
+
+.subtitle {
+  padding-bottom: 2%;
+}
+
