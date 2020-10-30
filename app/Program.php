@@ -9,13 +9,24 @@ class Program extends Model
     /**
      * @var array
      */
-    protected $fillable = [];
+    protected $fillable = [
+        'name',
+        'description',
+    ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @var string[]
      */
-    public function trainer()
+    protected $dates = [
+        'created_at',
+        'updated_at'
+    ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function programMembers()
     {
-        return $this->belongsTo(Program::class);
+        return $this->hasMany(ProgramMember::class);
     }
 }

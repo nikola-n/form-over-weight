@@ -17,21 +17,7 @@ class CreateProgramsTable extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->text('description')->nullable();
-            //////////////////
-            //
-            //
-            //
-            //// $table->string('duration')->nullable();
-            //
-            //// MemberProgram => Pivot? Regular Eloquent Model
-            //
-            //$table->dateTime('start_date')->nullable();
-            //$table->dateTime('end_date')->nullable();
-            //$table->foreignId('member_id')->references('id')->on('members')->onDelete('cascade');
-            //$table->foreignId('trainer_id')->references('id')->on('trainers')->onDelete('cascade');
-            //$table->foreignId('gym_id')->references('id')->on('gyms')->onDelete('cascade');
-            //// $table->foreignId('city_id')->references('id')->on('cities')->onDelete('cascade');
-            //$table->timestamps();
+            $table->timestamps();
         });
     }
 

@@ -17,10 +17,10 @@ class GymSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        foreach (range(1, 10) as $gym) {
+        foreach (range(1, 3) as $gym) {
             Gym::create([
                 'name'    => $faker->streetName,
-                'city_id' => $gym,
+                'city_id' => 1,
             ]);
         }
     }

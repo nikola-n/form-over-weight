@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('header')
-    @include('_includes.header',
-    ['title' => 'Cities',
+    @include('_includes.header',[
+    'title' => 'Cities',
     'subtitle' => 'Are we located in your city?',
     'join_community' => 'JOIN OUR COMMUNITY',
     'schedule_program' => 'SCHEDULE PROGRAM',
@@ -11,7 +11,9 @@
 
 @section('content')
 
-    @include('flash::message')
+    <div class="text-center">
+        @include('flash::message')
+    </div>
 
     <div class="container-fluid m-0 pl-3 pr-3">
         <div class="row">

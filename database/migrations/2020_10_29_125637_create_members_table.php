@@ -17,7 +17,7 @@ class CreateMembersTable extends Migration
             $table->id();
             $table->string('name');
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('gyms_id')->constrained();
+            $table->foreignId('gym_id')->constrained();
             $table->timestamps();
         });
     }

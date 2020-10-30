@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Program;
-use Illuminate\Http\Request;
 
 class ProgramController extends Controller
 {
@@ -12,15 +11,16 @@ class ProgramController extends Controller
      */
     public function index()
     {
-        $programs = Program::query()->get();
+        $programs = Program::query()->paginate(5);
 
         return view('programs.index', ['programs' => $programs]);
     }
 
-    public function store(Request $request)
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function create()
     {
-        dd($request->all());
-        return redirect()->route('program.stepTwo');
+        return view('programs.create');
     }
-
 }

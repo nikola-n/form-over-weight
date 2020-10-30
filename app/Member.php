@@ -12,7 +12,7 @@ class Member extends Model
     protected $fillable = [
         'name',
         'user_id',
-        'gyms_id'
+        'gym_id'
     ];
 
     /**
@@ -28,6 +28,14 @@ class Member extends Model
      */
     public function gym()
     {
-        return $this->belongsTo(Gym::class);
+        return $this->belongsTo(Gym::class, 'gym_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function programMember()
+    {
+        return $this->hasMany(ProgramMember::class, 'member_id');
     }
 }

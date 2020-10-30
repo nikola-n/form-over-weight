@@ -59,6 +59,7 @@
                                     <label for="member-gyms" class="col-md-4 col-form-label text-md-right">{{ __('Gym') }}</label>
                                     <div class="col-md-6">
                                         <select name="member-gyms" class="form-control @error('member-gyms') is-invalid @enderror">
+                                            <option value="0">Choose Gym</option>
                                             @foreach($gyms as $gym)
                                                 <option value="{{ $gym->id }}">{{ $gym->name }}</option>
                                             @endforeach

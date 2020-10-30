@@ -17,7 +17,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Programs</h5>
                         <p class="card-text">Checkout our workout programs</p>
-                        <a href="#" class="btn btn-primary">Go to programs</a>
+                        <a href="{{ route('programs.index') }}" class="btn btn-primary">Go to programs</a>
                     </div>
                 </div>
             </div>
@@ -26,7 +26,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Blogs</h5>
                         <p class="card-text">Learn some nutrition facts, about calories and healthy advices</p>
-                        <a href="#" class="btn btn-primary">Go to Blogs</a>
+                        <a href="{{ route('blogs.index') }}" class="btn btn-primary">Go to Blogs</a>
                     </div>
                 </div>
             </div>
@@ -37,7 +37,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Trainers</h5>
                         <p class="card-text">Checkout our Trainers</p>
-                        <a href="#" class="btn btn-primary">Go to Trainers</a>
+                        <a href="{{ route('trainers.index') }}" class="btn btn-primary">Go to Trainers</a>
                     </div>
                 </div>
             </div>
@@ -46,7 +46,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Gyms</h5>
                         <p class="card-text">We are all over the country.</p>
-                        <a href="#" class="btn btn-primary">Go to gyms</a>
+                        <a href="{{ route('gyms.index') }}" class="btn btn-primary">Go to gyms</a>
                     </div>
                 </div>
             </div>
@@ -66,7 +66,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Become a member</h5>
                         <p class="card-text">Book on of our programs</p>
-                        <a href="#" class="btn btn-primary">Go to Schedule Program</a>
+                        <a href="{{ route('programs.index') }}" class="btn btn-primary">Go to Schedule Program</a>
                     </div>
                 </div>
             </div>

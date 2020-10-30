@@ -2,35 +2,39 @@
 
 @section('content')
 
+    <div class="text-center">
+        @include('flash::message')
+    </div>
+
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <h1 class="text-uppercase text-center" style="padding-top: 5%">Schedule a Program</h1>
-                <form action="{{ route('program.stepOne') }}" method="POST" class="col-md-6 offset-3">
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">First Name</label>
-                        <input type="text" class="form-control" name="first_name" aria-describedby="emailHelp" placeholder="Enter First Name">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Last Name</label>
-                        <input type="text" class="form-control" name="last_name" aria-describedby="emailHelp" placeholder="Enter Last Name">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Email address</label>
-                        <input type="email" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-                    </div>
-
-                    <div class="form-group">
-                        <select class="form-control" name="program">
-                            @foreach($programs as $program)
-                                <option value="{{ $program->id }}">{{ $program->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Go to the next step</button>
-                </form>
+                <h1 class="text-uppercase p-5 text-center">List of all programs</h1>
             </div>
+            @foreach($programs as $program)
+                <div class="col-md-6 d-flex justify-content-center">
+                    <div class="card mb-3" style="max-width: 540px;">
+                        <div class="row no-gutters">
+
+                            <div class="col-md-4">
+                                <img src="{{ asset('images/istockphoto-1069959276-612x612.jpg') }}" class="card-img" alt="gym">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ $program->name }}</h5>
+                                    <p class="card-text">{{ str_limit($program->description, 50) }}</p>
+                                    <p class="card-text">
+                                        <small class="text-muted"> {{ $program->created_at->diffForHumans() }}</small>
+                                    </p>
+                                    <p>
+                                        <a class="btn btn-info text-white" href="{{ route('members.create', ['program_id' => $program->id]) }}">Apply</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
         </div>
     </div>
 

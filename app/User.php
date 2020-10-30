@@ -21,7 +21,7 @@ class User extends Authenticatable
                 $user->member()->create([
                     'name'    => $user->name,
                     'user_id' => $user->id,
-                    'gyms_id' => request('member-gyms'),
+                    'gym_id' => request('member-gyms'),
                 ]);
             }
         });
@@ -67,8 +67,27 @@ class User extends Authenticatable
         return $this->hasOne(Trainer::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function member()
     {
         return $this->hasOne(Member::class);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isMember()
+    {
+        return $this->role == 'member';
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTrainer()
+    {
+        return $this->role == 'trainer';
     }
 }

@@ -38,7 +38,12 @@ class Trainer extends Model
      */
     public function gym()
     {
-        return $this->belongsToMany(Gym::class, 'gyms_trainers', 'gym_id');
+        return $this->belongsToMany(Gym::class, 'gyms_trainers', 'gym_id')->withTimestamps();
+    }
+
+    public function programMember()
+    {
+        return $this->hasMany(ProgramMember::class);
     }
 
 }

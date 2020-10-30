@@ -1,6 +1,9 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\City;
+use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 
 class CitySeeder extends Seeder
@@ -12,7 +15,7 @@ class CitySeeder extends Seeder
      */
     public function run()
     {
-        $faker = Faker\Factory::create();
+        $faker = Faker::create();
 
         foreach (range(1, 5) as $city) {
             City::create([

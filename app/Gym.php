@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Gym extends Model
 {
+
     /**
      * @var string[]
      */
@@ -19,7 +20,7 @@ class Gym extends Model
      */
     public function city()
     {
-        return $this->belongsTo(City::class);
+        return $this->belongsTo(City::class, 'city_id');
     }
 
     /**
