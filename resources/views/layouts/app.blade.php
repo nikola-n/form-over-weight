@@ -16,3 +16,4 @@
 @include('_includes.footer')
 </body>
 </html>
+@stack('scripts')

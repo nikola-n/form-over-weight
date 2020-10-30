@@ -3,7 +3,9 @@
 @section('header')
     @include('_includes.header',
     ['title' => 'Cities',
-    'subtitle' => 'Are we located in your city?'
+    'subtitle' => 'Are we located in your city?',
+    'join_community' => 'JOIN OUR COMMUNITY',
+    'schedule_program' => 'SCHEDULE PROGRAM',
     ])
 @endsection
 
@@ -24,7 +26,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($cities as $city)
+                    @forelse($cities as $city)
                         <tr>
                             <td>{{ $city->name }}</td>
                             <td>{{ $city->created_at }}</td>
@@ -39,8 +41,17 @@
                             </td>
                             <td><a class="btn btn-success" href="{{ route('cities.create') }}">Create</a></td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="4">
+                                <div class="h5">No cities added yet.</div>
+                            </td>
+                            <td>
+                                <a class="btn btn-success" href="{{ route('cities.create') }}">Add City</a>
+                            </td>
+                        </tr>
                     </tbody>
+                    @endforelse
                 </table>
             </div>
         </div>

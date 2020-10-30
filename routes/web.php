@@ -19,6 +19,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::resource('cities', \CityController::class);
-
+Route::resource('cities', \CityController::class)   ;
+Route::resource('programs', \ProgramController::class);
+Route::get('trainers', \TrainerController::class)->name('trainers.index');
 Route::get('/home', 'HomeController@index')->name('home');

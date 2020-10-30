@@ -6,17 +6,28 @@ use Illuminate\Database\Eloquent\Model;
 
 class Member extends Model
 {
-    protected $fillable = [];
+    /**
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+        'user_id',
+        'gyms_id'
+    ];
 
-    public function trainer()
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
     {
-        return $this->belongsToMany(Trainer::class);
+        return $this->belongsTo(User::class);
     }
 
-    public function program()
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function gym()
     {
-        return $this->belongsToMany(Program::class);
+        return $this->belongsTo(Gym::class);
     }
-
-
 }

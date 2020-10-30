@@ -15,10 +15,8 @@ class CreateTrainersTable extends Migration
     {
         Schema::create('trainers', function (Blueprint $table) {
             $table->id();
-            $table->string('first_name')->nullable();
-            $table->string('last_name')->nullable();
-            $table->integer('age')->nullable();
-            $table->string('experience')->nullable();
+            $table->string('name')->nullable();
+            $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });
     }

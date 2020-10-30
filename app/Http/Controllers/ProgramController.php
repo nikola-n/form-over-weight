@@ -17,7 +17,7 @@ class ProgramController extends Controller
         return view('programs.index', ['programs' => $programs]);
     }
 
-    public function stepOne(Request $request)
+    public function store(Request $request)
     {
         dd($request->all());
         return redirect()->route('program.stepTwo');

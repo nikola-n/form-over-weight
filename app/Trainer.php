@@ -6,17 +6,39 @@ use Illuminate\Database\Eloquent\Model;
 
 class Trainer extends Model
 {
+
+    /**
+     * Attach ids to gyms_trainers pivot table
+     */
+    public static function booted()
+    {
+        static::created(function ($trainer) {
+            $trainer->gym()->attach(request('gyms'), ['trainer_id' => $trainer->id]);
+        });
+    }
+
     /**
      * @var array
      */
-    protected $fillable = [];
+    protected $fillable = [
+        'name',
+        'user_id',
+    ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function program()
+    public function user()
     {
-        return $this->hasMany(Trainer::class);
+        return $this->hasOne(User::class, 'user_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function gym()
+    {
+        return $this->belongsToMany(Gym::class, 'gyms_trainers', 'gym_id');
     }
 
 }

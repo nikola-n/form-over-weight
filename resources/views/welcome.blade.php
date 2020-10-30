@@ -3,7 +3,9 @@
 @section('header')
     @include('_includes.header',[
         'title'=> 'FORM OVER WEIGHT',
-        'subtitle' => 'Train with the best coaches and stay strong & healthy'
+        'subtitle' => 'Train with the best coaches and stay strong & healthy',
+        'join_community' => 'JOIN OUR COMMUNITY',
+        'schedule_program' => 'SCHEDULE PROGRAM'
         ])
 @endsection
 

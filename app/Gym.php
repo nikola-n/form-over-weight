@@ -21,4 +21,12 @@ class Gym extends Model
     {
         return $this->belongsTo(City::class);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function trainer()
+    {
+        return $this->belongsToMany(Trainer::class, 'gyms_trainers', 'trainer_id');
+    }
 }

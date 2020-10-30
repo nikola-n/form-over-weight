@@ -11,7 +11,7 @@
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/welcome">Home</a>
+                    <a class="nav-link" href="/">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/programs">Programs</a>
@@ -20,7 +20,7 @@
                     <a class="nav-link" href="/blog">Blog</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/trainers">Trainers</a>
+                    <a class="nav-link" href="{{ route('trainers.index') }}">Trainers</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/cities">Cities</a>
