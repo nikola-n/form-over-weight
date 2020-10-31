@@ -19,11 +19,11 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::resource('cities', \CityController::class);
+Route::resource('cities', \CityController::class)->except('show');
 Route::resource('programs', \ProgramController::class)->except('show');
 Route::resource('blogs', \BlogController::class);
 Route::resource('gyms', \GymController::class);
-Route::resource('programs/members', \ProgramMemberController::class);
+Route::resource('programsmembers', \ProgramMemberController::class);
 
 Route::get('trainers', \TrainerController::class)->name('trainers.index');
 Route::get('/home', 'HomeController@index')->name('home');

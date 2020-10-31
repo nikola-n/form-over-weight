@@ -13,7 +13,7 @@ class Trainer extends Model
     public static function booted()
     {
         static::created(function ($trainer) {
-            $trainer->gym()->attach(request('gyms'), ['trainer_id' => $trainer->id]);
+            $trainer->gym()->attach(request('gyms'));
         });
     }
 
@@ -38,7 +38,7 @@ class Trainer extends Model
      */
     public function gym()
     {
-        return $this->belongsToMany(Gym::class, 'gyms_trainers', 'gym_id','trainer_id')->withTimestamps();
+        return $this->belongsToMany(Gym::class, 'gyms_trainers', 'trainer_id', 'gym_id')->withTimestamps();
     }
 
     /**

@@ -25,8 +25,8 @@ class ProgramMemberRequest extends FormRequest
     {
         return [
             'start_date' => 'required|date',
-            'end_date'   => 'required|date',
-            'gym_id'     => 'required|not_in:0',
+            'end_date'   => 'required|date|after:start_date',
+            'member_id' => 'nullable',
             'trainer_id' => 'required|not_in:0',
             'program_id' => 'nullable',
         ];

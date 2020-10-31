@@ -36,6 +36,6 @@ class Member extends Model
      */
     public function programMember()
     {
-        return $this->hasMany(ProgramMember::class, 'member_id');
+        return $this->hasMany(ProgramMember::class);
     }
 }

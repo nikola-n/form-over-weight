@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ProgramMember extends Model
@@ -11,24 +10,13 @@ class ProgramMember extends Model
     use HasFactory;
 
     /**
-     * @var array
+     * @var string[]
      */
-    public $attributes = [];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        $this->attributes = $attributes;
-    }
-
     protected $fillable = [
         'start_date',
         'end_date',
         'member_id',
         'trainer_id',
-        'gym_id',
         'program_id',
     ];
 
@@ -50,7 +38,7 @@ class ProgramMember extends Model
      */
     public function member()
     {
-        return $this->belongsTo(Member::class);
+        return $this->belongsTo(Member::class, 'member_id');
     }
 
     /**
@@ -58,15 +46,7 @@ class ProgramMember extends Model
      */
     public function trainer()
     {
-        return $this->belongsTo(Trainer::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function gym()
-    {
-        return $this->belongsTo(Gym::class);
+        return $this->belongsTo(Trainer::class, 'trainer_id');
     }
 
     /**

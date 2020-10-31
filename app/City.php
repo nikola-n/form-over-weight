@@ -7,6 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class City extends Model
 {
     /**
+     * delete gym when city is deleted
+     */
+    //public static function booted()
+    //{
+    //    static::deleting(function ($city) {
+    //        $city->gym()->delete();
+    //    });
+    //}
+
+    /**
      * @var string[]
      */
     protected $fillable = [
@@ -18,6 +28,6 @@ class City extends Model
      */
     public function gym()
     {
-        return $this->hasMany(Gym::class, 'gym_id');
+        return $this->hasMany(Gym::class, 'city_id');
     }
 }

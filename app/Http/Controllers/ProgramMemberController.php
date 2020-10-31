@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Gym;
+use App\Program;
 use App\Trainer;
 use App\ProgramMember;
 use Illuminate\Http\Request;
@@ -21,31 +21,22 @@ class ProgramMemberController extends Controller
      */
     public function index()
     {
-        if (auth()->user()->isMember()) {
-            $program_members = ProgramMember::where('member_id', auth()->user()->member->id)
-                ->with('program')
-                ->paginate(5);
+        $program_members = ProgramMember::paginate(5);
 
-            return view('program_members.index', compact('program_members'));
-        }
-        if (auth()->user()->isTrainer()) {
-            $program_members = ProgramMember::where('member_id', null)
-                ->with('program')
-                ->paginate(5);
-
-            return view('program_members.index', compact('program_members'));
-        }
+        return view('program_members.index', compact('program_members'));
     }
 
     /**
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function create()
     {
-        $trainers = Trainer::query()->get();
-        $gyms     = Gym::query()->get();
+        $this->authorize('create', ProgramMember::class);
 
-        return view('program_members.create', compact('trainers', 'gyms'));
+        $trainers = Trainer::query()->get();
+
+        return view('program_members.create', compact('trainers'));
     }
 
     /**
@@ -55,120 +46,77 @@ class ProgramMemberController extends Controller
      */
     public function store(ProgramMemberRequest $request)
     {
-        if (auth()->user()->isMember()) {
-            $programMembers = ProgramMember::where('member_id', auth()->user()->member->id)->get();
-            foreach ($programMembers as $programMember) {
-                if ($programMember->start_date <= $request->start_date
-                    && $programMember->end_date >= $request->end_date) {
-                    flash()->warning("You selected invalid dates, you are attending to <a href='/programs/members'>training</a> that day!");
-                    return back();
-                }
-            }
-        } else {
-            $programMembers = ProgramMember::where('member_id', auth()->user()->trainer->id)->get();
-            foreach ($programMembers as $programMember) {
-                if ($programMember->start_date <= $request->start_date
-                    && $programMember->end_date >= $request->end_date) {
-                    flash()->warning("You selected invalid dates, you are attending to <a href='/programs/members'>training</a> that day!");
-                    return back();
-                }
+        $user = auth()->user();
+
+        $programMembers = ProgramMember::where('member_id', $user->member->id)->get();
+
+        foreach ($programMembers as $programMember) {
+            if (($programMember->start_date <= $request->start_date)
+                || ($programMember->end_date >= $request->end_date)) {
+                flash()->warning("You selected invalid dates, you are attending to <a href='/programsmembers'>training</a> that day!");
+                return back();
             }
         }
 
-        $programMember = new ProgramMember($request->except('_token', 'is_member'));
-
-        if ($request->get('is_member') == 1 && auth()->user()->isMember()) {
-            $programMember->member_id = auth()->user()->member->id;
-            $programMember->save();
-        } else {
-            $programMember->member_id = null;
-            $programMember->save();
-        }
-        if ($request->get('is_member') == 2) {
-            $programMember->member_id = null;
-            $programMember->save();
-        }
+        ProgramMember::create([
+            'start_date' => $request->start_date,
+            'end_date'   => $request->end_date,
+            'program_id' => $request->program_id,
+            'trainer_id' => $request->trainer_id,
+            'member_id'  => auth()->id(),
+        ]);
 
         flash()->success('You have successfully applied to this program!');
 
-        return redirect()->route('programs.index');
+        return redirect()->route('programsmembers.index');
     }
 
     /**
      * Show the form for editing the specified resource.
      *
+     * @param \App\ProgramMember $programsmember
+     *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
-    public function edit()
+    public function edit(ProgramMember $programsmember)
     {
-        if (auth()->user()->isMember()) {
-            $program_member = ProgramMember::where('member_id', auth()->user()->member->id)
-                ->with('trainer')
-                ->with('gym')
-                ->first();
-        }
-        if (auth()->user()->isTrainer()) {
-            $program_member = ProgramMember::where('member_id', null)
-                ->with('trainer')
-                ->with('gym')
-                ->first();
-        }
         $trainers = Trainer::query()->get();
-        $gyms     = Gym::query()->get();
-        return view('program_members.edit', compact('trainers', 'gyms', 'program_member'));
+
+        return view('program_members.edit', compact('programsmember', 'trainers'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \App\Http\Requests\ProgramMemberRequest $request
-     * @param \App\ProgramMember                      $programMember
+     * @param \Illuminate\Http\Request $request
+     *
+     * @param \App\ProgramMember       $programsmember
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, ProgramMember $programMember)
+    public function update(Request $request, ProgramMember $programsmember)
     {
-        if (auth()->user()->isMember()) {
-            $program_member = ProgramMember::where('member_id', auth()->user()->member->id)
-                ->with('trainer')
-                ->with('gym')
-                ->first();
-            $program_member->update($request->except('_token', '_method'));
-        }
-        if (auth()->user()->isTrainer()) {
-            $program_member = ProgramMember::where('member_id', null)
-                ->with('trainer')
-                ->with('gym')
-                ->first();
-            $program_member->update($request->except('_token', '_method'));
-        }
+        $programsmember->update($request->all());
 
-        return redirect()->route('members.index', compact('programMember'));
+        flash()->success('Program updated!');
+
+        return redirect()->route('programsmembers.index', compact('programsmember'));
     }
 
     /**
      * Remove the specified resource from storage.
      *
+     * @param \App\ProgramMember $programsmember
+     *
      * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
-    public function destroy()
+    public function destroy(ProgramMember $programsmember)
     {
-        if (auth()->user()->isMember()) {
-            $program_member = ProgramMember::where('member_id', auth()->user()->member->id)
-                ->with('trainer')
-                ->with('gym')
-                ->first();
-            $program_member->delete();
-        }
-        if (auth()->user()->isTrainer()) {
-            $program_member = ProgramMember::where('member_id', null)
-                ->with('trainer')
-                ->with('gym')
-                ->first();
-            $program_member->delete();
-        }
+        $programsmember->delete();
+
         flash()->warning("You have unsubscribed from the program successfully!");
 
-        return redirect()->route('members.index');
+        return redirect()->route('programsmembers.index');
     }
 }

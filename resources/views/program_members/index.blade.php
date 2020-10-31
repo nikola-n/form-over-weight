@@ -15,7 +15,6 @@
                         <th>Name</th>
                         <th>Start Date</th>
                         <th>End Date</th>
-                        <th>Gym</th>
                         <th>Your Trainer</th>
                         <th>Created at</th>
                         <th>Updated at</th>
@@ -23,19 +22,18 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @forelse($program_members as $program_member)
+                    @forelse($program_members as $programsmember)
                         <tr>
-                            <td>{{ $program_member->program->name }}</td>
-                            <td>{{ $program_member->start_date }}</td>
-                            <td>{{ $program_member->end_date }}</td>
-                            <td>{{ $program_member->gym->name }}</td>
-                            <td>{{ $program_member->trainer->name }}</td>
-                            <td>{{ $program_member->created_at }}</td>
-                            <td>{{ $program_member->updated_at }}</td>
-                            <td><a class="btn btn-dark" href="{{ route('members.edit', $program_member) }}">Edit</a>
+                            <td>{{ $programsmember->program->name }}</td>
+                            <td>{{ $programsmember->start_date }}</td>
+                            <td>{{ $programsmember->end_date }}</td>
+                            <td>{{ $programsmember->trainer->name }}</td>
+                            <td>{{ $programsmember->created_at }}</td>
+                            <td>{{ $programsmember->updated_at }}</td>
+                            <td><a class="btn btn-dark" href="{{ route('programsmembers.edit', $programsmember) }}">Edit</a>
                             </td>
                             <td>
-                                <form action="{{ route('members.destroy', $program_member) }}" method="POST">
+                                <form action="{{ route('programsmembers.destroy', $programsmember) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-danger" type="submit">Delete</button>

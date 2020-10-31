@@ -33,7 +33,7 @@
                                         <small class="text-muted"> {{ $program->created_at->diffForHumans() }}</small>
                                     </p>
                                     <p>
-                                        <a class="btn btn-info text-white" href="{{ route('members.create', ['program_id' => $program->id]) }}">Apply</a>
+                                        <a class="btn btn-info text-white" href="{{ route('programsmembers.create', ['program_id' => $program->id]) }}">Apply</a>
                                     </p>
                                 </div>
                             </div>

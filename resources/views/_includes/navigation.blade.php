@@ -59,7 +59,7 @@
                                 @csrf
                             </form>
 
-                            <a class="dropdown-item" href="{{ route('members.index') }}">
+                            <a class="dropdown-item" href="{{ route('programsmembers.index') }}">
                                 My Workouts
                             </a>
                             @if(auth()->user()->isTrainer())
