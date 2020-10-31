@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Program;
 use App\Trainer;
 use App\ProgramMember;
 use Illuminate\Http\Request;
@@ -63,7 +62,7 @@ class ProgramMemberController extends Controller
             'end_date'   => $request->end_date,
             'program_id' => $request->program_id,
             'trainer_id' => $request->trainer_id,
-            'member_id'  => auth()->id(),
+            'member_id'  => auth()->user()->member->id,
         ]);
 
         flash()->success('You have successfully applied to this program!');
