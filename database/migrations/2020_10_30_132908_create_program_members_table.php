@@ -15,8 +15,8 @@ class CreateProgramMembersTable extends Migration
     {
         Schema::create('program_members', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('start_date')->nullable();
-            $table->dateTime('end_date')->nullable();
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
             $table->foreignId('program_id')->nullable()->constrained('programs');
             $table->foreignId('member_id')->nullable()->references('id')->on('members')->onDelete('cascade');
             $table->foreignId('trainer_id')->nullable()->references('id')->on('trainers')->onDelete('cascade');

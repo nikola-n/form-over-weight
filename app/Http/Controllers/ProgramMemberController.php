@@ -29,7 +29,7 @@ class ProgramMemberController extends Controller
             return view('program_members.index', compact('program_members'));
         }
         if (auth()->user()->isTrainer()) {
-            $program_members = ProgramMember::where('trainer_id', auth()->user()->trainer->id)
+            $program_members = ProgramMember::where('member_id', null)
                 ->with('program')
                 ->paginate(5);
 
@@ -55,19 +55,33 @@ class ProgramMemberController extends Controller
      */
     public function store(ProgramMemberRequest $request)
     {
-        $programMembers = ProgramMember::where('member_id', auth()->user()->member->id)->get();
-
-        foreach ($programMembers as $programMember) {
-            if ($programMember->start_date <= $request->start_date
-                && $programMember->end_date >= $request->end_date) {
-                flash()->warning("You selected invalid dates, you are attending to <a href='/programs/members'>training</a> that day!");
-                return back();
+        if (auth()->user()->isMember()) {
+            $programMembers = ProgramMember::where('member_id', auth()->user()->member->id)->get();
+            foreach ($programMembers as $programMember) {
+                if ($programMember->start_date <= $request->start_date
+                    && $programMember->end_date >= $request->end_date) {
+                    flash()->warning("You selected invalid dates, you are attending to <a href='/programs/members'>training</a> that day!");
+                    return back();
+                }
+            }
+        } else {
+            $programMembers = ProgramMember::where('member_id', auth()->user()->trainer->id)->get();
+            foreach ($programMembers as $programMember) {
+                if ($programMember->start_date <= $request->start_date
+                    && $programMember->end_date >= $request->end_date) {
+                    flash()->warning("You selected invalid dates, you are attending to <a href='/programs/members'>training</a> that day!");
+                    return back();
+                }
             }
         }
+
         $programMember = new ProgramMember($request->except('_token', 'is_member'));
 
-        if ($request->get('is_member') == 1) {
+        if ($request->get('is_member') == 1 && auth()->user()->isMember()) {
             $programMember->member_id = auth()->user()->member->id;
+            $programMember->save();
+        } else {
+            $programMember->member_id = null;
             $programMember->save();
         }
         if ($request->get('is_member') == 2) {
@@ -81,49 +95,80 @@ class ProgramMemberController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Show the form for editing the specified resource.
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
-    public function show()
+    public function edit()
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        if (auth()->user()->isMember()) {
+            $program_member = ProgramMember::where('member_id', auth()->user()->member->id)
+                ->with('trainer')
+                ->with('gym')
+                ->first();
+        }
+        if (auth()->user()->isTrainer()) {
+            $program_member = ProgramMember::where('member_id', null)
+                ->with('trainer')
+                ->with('gym')
+                ->first();
+        }
+        $trainers = Trainer::query()->get();
+        $gyms     = Gym::query()->get();
+        return view('program_members.edit', compact('trainers', 'gyms', 'program_member'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param int                      $id
+     * @param \App\Http\Requests\ProgramMemberRequest $request
+     * @param \App\ProgramMember                      $programMember
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, ProgramMember $programMember)
     {
-        //
+        if (auth()->user()->isMember()) {
+            $program_member = ProgramMember::where('member_id', auth()->user()->member->id)
+                ->with('trainer')
+                ->with('gym')
+                ->first();
+            $program_member->update($request->except('_token', '_method'));
+        }
+        if (auth()->user()->isTrainer()) {
+            $program_member = ProgramMember::where('member_id', null)
+                ->with('trainer')
+                ->with('gym')
+                ->first();
+            $program_member->update($request->except('_token', '_method'));
+        }
+
+        return redirect()->route('members.index', compact('programMember'));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
-     *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($id)
+    public function destroy()
     {
-        //
+        if (auth()->user()->isMember()) {
+            $program_member = ProgramMember::where('member_id', auth()->user()->member->id)
+                ->with('trainer')
+                ->with('gym')
+                ->first();
+            $program_member->delete();
+        }
+        if (auth()->user()->isTrainer()) {
+            $program_member = ProgramMember::where('member_id', null)
+                ->with('trainer')
+                ->with('gym')
+                ->first();
+            $program_member->delete();
+        }
+        flash()->warning("You have unsubscribed from the program successfully!");
+
+        return redirect()->route('members.index');
     }
 }

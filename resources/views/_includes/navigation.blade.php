@@ -58,6 +58,15 @@
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf
                             </form>
+
+                            <a class="dropdown-item" href="{{ route('members.index') }}">
+                                My Workouts
+                            </a>
+                            @if(auth()->user()->isTrainer())
+                                <a class="dropdown-item" href="{{ route('programs.index') }}">
+                                    My Programs
+                                </a>
+                            @endif
                         </div>
                     </li>
                 @endguest

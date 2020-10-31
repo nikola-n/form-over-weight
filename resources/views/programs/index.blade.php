@@ -8,8 +8,14 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12 pb-5">
                 <h1 class="text-uppercase p-5 text-center">List of all programs</h1>
+                @can('create', App\Program::class)
+                    <div class="text-center">
+                        <span>Are you an experienced trainer?</span>
+                        <a href="{{ route('programs.create') }}">Create your program then!</a>
+                    </div>
+                @endcan
             </div>
             @foreach($programs as $program)
                 <div class="col-md-6 d-flex justify-content-center">

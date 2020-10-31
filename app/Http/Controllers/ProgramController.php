@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Program;
+use Illuminate\Http\Request;
 
 class ProgramController extends Controller
 {
@@ -22,5 +23,24 @@ class ProgramController extends Controller
     public function create()
     {
         return view('programs.create');
+    }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name'        => 'required',
+            'description' => 'required|min:3|max:255',
+        ]);
+
+        Program::create($validated);
+
+        flash()->success('Program created!');
+
+        return redirect()->route('programs.index');
     }
 }

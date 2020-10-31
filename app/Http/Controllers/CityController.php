@@ -39,10 +39,6 @@ class CityController extends Controller
         return redirect()->route('cities.index');
     }
 
-    public function show(City $city)
-    {
-
-    }
 
     /**
      * @param \App\City $city

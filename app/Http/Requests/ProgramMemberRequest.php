@@ -28,7 +28,7 @@ class ProgramMemberRequest extends FormRequest
             'end_date'   => 'required|date',
             'gym_id'     => 'required|not_in:0',
             'trainer_id' => 'required|not_in:0',
-            'program_id' => 'required',
+            'program_id' => 'nullable',
         ];
     }
 }

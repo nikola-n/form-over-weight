@@ -41,15 +41,15 @@
                                     <button class="btn btn-danger" type="submit">Delete</button>
                                 </form>
                             </td>
-                            <td><a class="btn btn-success" href="{{ route('members.create') }}">Create</a></td>
+                            <td><a class="btn btn-success" href="{{ route('programs.index') }}">Apply</a></td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4">
+                            <td colspan="7">
                                 <div class="h5">No programs added yet.</div>
                             </td>
                             <td>
-                                <a class="btn btn-success" href="{{ route('members.create') }}">Add Program</a>
+                                <a class="btn btn-success float-right" href="{{ route('programs.index') }}">Apply</a>
                             </td>
                         </tr>
                     </tbody>
