@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Trainer;
+use App\Gym;
+use App\User;
 use App\ProgramMember;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProgramMemberRequest;
@@ -20,7 +21,9 @@ class ProgramMemberController extends Controller
      */
     public function index()
     {
-        $program_members = ProgramMember::paginate(5);
+        $user = auth()->user();
+
+        $program_members = $user->programMember()->paginate(10);
 
         return view('program_members.index', compact('program_members'));
     }
@@ -31,11 +34,11 @@ class ProgramMemberController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', ProgramMember::class);
+        $users = User::where('role', User::ROLE_TRAINER)->get();
 
-        $trainers = Trainer::query()->get();
+        $gyms = Gym::query()->get();
 
-        return view('program_members.create', compact('trainers'));
+        return view('program_members.create', compact('users', 'gyms'));
     }
 
     /**
@@ -47,23 +50,38 @@ class ProgramMemberController extends Controller
     {
         $user = auth()->user();
 
-        $programMembers = ProgramMember::where('member_id', $user->member->id)->get();
+        $programMembers = ProgramMember::where('user_id', $user->id)->get();
 
         foreach ($programMembers as $programMember) {
             if (($programMember->start_date <= $request->start_date)
-                || ($programMember->end_date >= $request->end_date)) {
+                && ($programMember->end_date >= $request->end_date)) {
                 flash()->warning("You selected invalid dates, you are attending to <a href='/programsmembers'>training</a> that day!");
                 return back();
             }
         }
 
-        ProgramMember::create([
-            'start_date' => $request->start_date,
-            'end_date'   => $request->end_date,
-            'program_id' => $request->program_id,
-            'trainer_id' => $request->trainer_id,
-            'member_id'  => auth()->user()->member->id,
-        ]);
+        if ($user->isMember()) {
+            $user->programMember()->create([
+                'start_date' => $request->start_date,
+                'end_date'   => $request->end_date,
+                'program_id' => $request->program_id,
+                'trainer_id' => $request->trainer_id,
+                'gym_id'     => $request->gym_id,
+                'user_id'    => $user->id,
+            ]);
+        }
+
+        if ($user->isTrainer()) {
+            foreach ($request->gyms_id as $gymId) {
+                $user->programMember()->create([
+                    'start_date' => $request->start_date,
+                    'end_date'   => $request->end_date,
+                    'program_id' => $request->program_id,
+                    'trainer_id' => $request->trainer_id,
+                    'gym_id'     => $gymId,
+                ]);
+            }
+        }
 
         flash()->success('You have successfully applied to this program!');
 
@@ -79,9 +97,11 @@ class ProgramMemberController extends Controller
      */
     public function edit(ProgramMember $programsmember)
     {
-        $trainers = Trainer::query()->get();
+        $users = User::where('role', User::ROLE_TRAINER)->get();
 
-        return view('program_members.edit', compact('programsmember', 'trainers'));
+        $gyms = Gym::query()->get();
+
+        return view('program_members.edit', compact('programsmember', 'users', 'gyms'));
     }
 
     /**

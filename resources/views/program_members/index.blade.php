@@ -16,6 +16,7 @@
                         <th>Start Date</th>
                         <th>End Date</th>
                         <th>Your Trainer</th>
+                        <th>Your Gyms</th>
                         <th>Created at</th>
                         <th>Updated at</th>
                         <th colspan="3" class="text-right">Action</th>
@@ -27,10 +28,12 @@
                             <td>{{ $programsmember->program->name }}</td>
                             <td>{{ $programsmember->start_date }}</td>
                             <td>{{ $programsmember->end_date }}</td>
-                            <td>{{ $programsmember->trainer->name }}</td>
+                            <td>{{ $programsmember->trainer_name }}</td>
+                            <td>{{ $programsmember->gym->name }}</td>
                             <td>{{ $programsmember->created_at }}</td>
                             <td>{{ $programsmember->updated_at }}</td>
-                            <td><a class="btn btn-dark" href="{{ route('programsmembers.edit', $programsmember) }}">Edit</a>
+                            <td>
+                                <a class="btn btn-dark" href="{{ route('programsmembers.edit', $programsmember) }}">Edit</a>
                             </td>
                             <td>
                                 <form action="{{ route('programsmembers.destroy', $programsmember) }}" method="POST">

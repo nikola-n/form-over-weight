@@ -15,9 +15,10 @@ class ProgramMember extends Model
     protected $fillable = [
         'start_date',
         'end_date',
-        'member_id',
+        'user_id',
         'trainer_id',
         'program_id',
+        'gym_id',
     ];
 
     /**
@@ -36,17 +37,17 @@ class ProgramMember extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function member()
+    public function user()
     {
-        return $this->belongsTo(Member::class, 'member_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function trainer()
+    public function gym()
     {
-        return $this->belongsTo(Trainer::class, 'trainer_id');
+        return $this->belongsTo(Gym::class, 'gym_id');
     }
 
     /**
@@ -55,5 +56,13 @@ class ProgramMember extends Model
     public function program()
     {
         return $this->belongsTo(Program::class, 'program_id');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTrainerNameAttribute()
+    {
+        return User::where('id', $this->trainer_id)->first()->name;
     }
 }

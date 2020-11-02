@@ -12,12 +12,12 @@ class City extends Model
     /**
      * delete gym when city is deleted
      */
-    //public static function booted()
-    //{
-    //    static::deleting(function ($city) {
-    //        $city->gym()->delete();
-    //    });
-    //}
+    public static function booted()
+    {
+        static::deleting(function ($city) {
+            $city->gym()->delete();
+        });
+    }
 
     /**
      * @var string[]

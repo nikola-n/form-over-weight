@@ -10,23 +10,10 @@ class User extends Authenticatable
 {
     use Notifiable, HasFactory;
 
-    public static function booted()
-    {
-        static::created(function ($user) {
-            if ($user->role == 'trainer') {
-                $user->trainer()->create(['name' => $user->name]);
-            }
 
-            if ($user->role == 'member') {
-                $user->member()->create([
-                    'name'    => $user->name,
-                    'user_id' => $user->id,
-                    'gym_id' => request('member-gyms'),
-                ]);
-            }
-        });
+    public const ROLE_MEMBER = 'member';
 
-    }
+    public const ROLE_TRAINER = 'trainer';
 
     /**
      * The attributes that are mass assignable.
@@ -60,22 +47,20 @@ class User extends Authenticatable
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function trainer()
+    public function programMember()
     {
-        return $this->hasOne(Trainer::class);
+        return $this->hasMany(ProgramMember::class);
+    }
+
+    public function gyms()
+    {
+        return $this->belongsToMany(Gym::class, 'program_members', 'user_id', 'gym_id');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function member()
-    {
-        return $this->hasOne(Member::class);
-    }
-
-    /**
+     *
      * @return bool
      */
     public function isMember()

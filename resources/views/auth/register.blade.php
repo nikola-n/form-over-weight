@@ -54,43 +54,6 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="member-select d-none">
-                                <div class="form-group row">
-                                    <label for="member-gyms" class="col-md-4 col-form-label text-md-right">{{ __('Gym') }}</label>
-                                    <div class="col-md-6">
-                                        <select name="member-gyms" class="form-control @error('member-gyms') is-invalid @enderror">
-                                            <option value="0">Choose Gym</option>
-                                            @foreach($gyms as $gym)
-                                                <option value="{{ $gym->id }}">{{ $gym->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('member-gyms')
-                                        <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="trainer-select d-none">
-                                <div class="form-group row">
-                                    <label for="gyms" class="col-md-4 col-form-label text-md-right">{{ __('Gym') }}</label>
-                                    <div class="col-md-6">
-                                        <select name="gyms[]" multiple class="form-control @error('gyms') is-invalid @enderror">
-                                            @foreach($gyms as $gym)
-                                                <option value="{{ $gym->id }}">{{ $gym->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('gyms')
-                                        <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-
                             <div class="form-group row">
                                 <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
