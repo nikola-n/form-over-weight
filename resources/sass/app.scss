@@ -1,4 +1,4 @@
-// Fonts
+ //Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
 
 // Variables
@@ -7,4 +7,9 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
-@import "home";
+
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;

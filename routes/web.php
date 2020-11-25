@@ -27,3 +27,7 @@ Route::resource('programsmembers', \ProgramMemberController::class);
 
 Route::get('trainers', \TrainerController::class)->name('trainers.index');
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+});

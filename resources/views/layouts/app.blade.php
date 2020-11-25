@@ -2,17 +2,16 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 @include('_includes.head')
 <body>
-<div id="app">
 
     @include('_includes.navigation')
 
     @yield('header')
 
-    <main>
+    <main class="container mx-auto">
         @yield('content')
     </main>
 
-</div>
+@livewireScripts
 @include('_includes.footer')
 </body>
 </html>

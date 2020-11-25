@@ -10,6 +10,7 @@
 @endsection
 
 @section('content')
+
     <div class="container-fluid">
         <div class="row mb-3 mt-3">
             <div class="col-sm-6">
